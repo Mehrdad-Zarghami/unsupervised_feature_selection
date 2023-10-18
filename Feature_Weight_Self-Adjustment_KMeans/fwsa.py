@@ -1,21 +1,18 @@
-
 import numpy as np
 
-from entropy_utils import u_calculation
-from entropy_utils import entropy_cost_function
-from entropy_utils import update_Z
-from entropy_utils import sub_weight_update
+from fwsa_utils import u_calculation
+from fwsa_utils import fwsa_cost_function
+from fwsa_utils import update_Z
+from fwsa_utils import fwsa_weight_update
 
 
-
-def ewkmeans(X, k, gama=1.5):
+def fwsa(X, k):
     """Put data (X) in k clusters based on the weight of each feature 
-    which is going to be calculated based on X and a user defined parameter gama
+    which is going to be calculated based on X
 
     Args:
         X (ndarray): input data(without label)
         k (int): the number of cluster
-        gama (float):  user defined parameter that is used in the definition of the loss function
 
     Return:
         history (dict): a dictionary that contains "U", "Z", "W", "cost" for all time steps of updating. 
@@ -43,14 +40,13 @@ def ewkmeans(X, k, gama=1.5):
     
     # Generate random weights that sum up to 1
 
-    weights = (1/n_features) * np.ones((n_clusters,n_features)).squeeze()
+    weights = (1/n_features) * np.ones(n_features).squeeze()
     # weights = np.array([1/4, 1/4, 1/4, 1/4])
     history['W'].append(weights)
-
     initial_U = np.zeros((X.shape[0], Z.shape[0]))
     history['U'].append(initial_U)
 
-    # put every thing together go for a while loop
+    # put every thing together to go for a while loop
     Z = history['Z'][-1] # the last update of Z
     weights = history['W'][-1] # the last update of W
 
@@ -60,7 +56,7 @@ def ewkmeans(X, k, gama=1.5):
         U = u_calculation(X, Z, weights)
         history['U'].append(U)
         # update cost
-        c = entropy_cost_function(U, Z, weights, X, gama)
+        c = fwsa_cost_function(U, Z, weights, X)
         history['cost'].append(c)
         if (history['U'][-1] == history['U'][-2]).all():
             break
@@ -69,24 +65,23 @@ def ewkmeans(X, k, gama=1.5):
         Z = update_Z(U, Z, X) # new update of Z
         history['Z'].append(Z)
         # Update cost
-        c = entropy_cost_function(U, Z, weights, X, gama)
+        c = fwsa_cost_function(U, Z, weights, X)
         history['cost'].append(c)
     
         # P3 --> update  weights
-        weights = sub_weight_update(X, U, Z, weights, gama)
+        weights = fwsa_weight_update(X, U, Z, weights)
         history['W'].append(weights)
         #update cost
-        c = entropy_cost_function(U, Z, weights, X, gama)
+        c = fwsa_cost_function(U, Z, weights, X)
         history['cost'].append(c)
 
     return history
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from sklearn.datasets import load_iris
     from sklearn.metrics import adjusted_rand_score
-    import matplotlib.pyplot as plt
-    from entropy_utils import clusters_vec
+    from fwsa_utils import clusters_vec
 
     # Load the Iris dataset
     iris = load_iris()
@@ -103,45 +98,14 @@ if __name__ == "__main__":
     def normalizer(data):
         return (data - np.mean(data,axis=0)) / (np.max(data, axis=0) - np.min(data, axis=0))
 
-    X = normalizer(X)
+    X_norm = normalizer(X)
 
-
-    gama = 0.3
     average_adjusted_rand_score_array = np.zeros(100)
     for i in range(100):
-        history = ewkmeans(X, n_clusters, gama=gama)
+        history = fwsa(X_norm, n_clusters)
         U = history["U"][-1]
         clusters = clusters_vec(U)
         a_r_s = adjusted_rand_score(y, clusters )
         average_adjusted_rand_score_array[i] = a_r_s
         
     print(average_adjusted_rand_score_array.mean())
-
-    # # First Algorithm
-
-    # average_adjusted_rand_score_array = np.zeros_like(gama_values)
-
-    # for b, gama in enumerate(gama_values):
-    #     adjusted_rand_score_array = np.zeros(repetition)
-    #     for i in range(repetition):
-    #         history = ewkmeans(X_norm, n_clusters, gama)
-    #         U = history["U"][-1]
-    #         clusters = clusters_vec(U)
-    #         a_r_s = adjusted_rand_score(y, clusters )
-    #         adjusted_rand_score_array[i] = a_r_s
-
-    #     average_adjusted_rand_score_array[b] =  adjusted_rand_score_array.mean()
-    #     # print(average_adjusted_rand_score_array)
-    #     # print(history["cost"])
-
-    # # Plot the data
-    # plt.plot(gama_values,average_adjusted_rand_score_array )
-
-    # # Add labels and title
-    # plt.xlabel('gama values')
-    # plt.ylabel(f'Average of Adjusted Rand Score for {repetition} repetition of gama')
-    # plt.title('First Algorithm ')
-
-    # # Show the plot
-    # plt.show()
-

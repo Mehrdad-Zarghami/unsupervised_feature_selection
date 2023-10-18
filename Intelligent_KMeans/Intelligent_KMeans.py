@@ -117,7 +117,7 @@ if __name__ == "__main__":
     import numpy as np
     def normalizer(data):
         return (data - np.mean(data,axis=0)) / (np.max(data, axis=0) - np.min(data, axis=0))
-    X = normalizer(X)
+    #X = normalizer(X)
 
 
     fit_ikmeans, deducted_z = intelligent_kmeans(X, 3)

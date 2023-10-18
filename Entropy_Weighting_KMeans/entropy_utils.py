@@ -249,7 +249,7 @@ def entropy_cost_function(U, Z, W_matrix, X, gama):
 
         b = 0  # second term in cost function
         for wv in W_matrix[k]:
-            b += wv * np.log(wv)
+            b += wv * np.log10(wv)
         
         cost += (a + gama*b)
     return cost
