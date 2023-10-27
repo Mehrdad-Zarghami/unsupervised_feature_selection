@@ -1,5 +1,8 @@
 # the utils file for fwsa --> modification of utils for wkmeans
 import numpy as np
+from pathlib import Path
+import pandas as pd
+from sklearn.datasets import load_iris
 
 def center_of_data(X):
     '''
@@ -132,7 +135,7 @@ def a_inner_cluster_seperation(U, Z, X):
         the sum of separations within clusters for each feature.
 
     '''
-    UZ = np.matmul(U ,Z) # a matrix (no.samples , no.features) where row i is the center of cluster that sample i belonges to.
+    UZ = np.matmul(U ,Z) # a matrix (no.samples , no.features) where row i is the center of cluster that sample i belongs to.
     inner_dissimilarity = np.square(X - UZ)
     a = np.sum(inner_dissimilarity,axis=0)
     return a
@@ -258,5 +261,192 @@ def sub_weight_update(X, U, Z, weights, beta):
             weights_upd[l, j] = 1 / Dlj_Dlt
 
     return weights_upd
+
+
+def dataset_selection():
+    script_location = Path(__file__).resolve()
+    # Access the folder containing the script
+    
+    script_folder = script_location.parent
+
+
+
+    while(True):
+            
+        selection = input('Which data? Only enter the corresponding number:\n 1-Australian_credit \n 2-Balance_scaler\n 3-cancer\n 4-car \n 5-ecoli \n 6-glass\n 7-heart \n 8-ionosphere\n 9-iris\n 10-soya \n 11-teaching_assistant \n 12-tic+tac+toe \n 13-wine\n')
+        if selection == '1':
+            number_of_real_classes = 2
+            # Load the CSV file using Pandas
+            X_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'X_AustraCC.csv'
+            y_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'y_AustraCC.csv'
+
+            df_X = pd.read_csv(X_selected_dataset_directory,header=None)
+            x = df_X.astype(float).values
+
+            df_y = pd.read_csv(y_selected_dataset_directory,header=None)
+            y = df_y.astype(float).values.reshape(-1,)
+
+            break
+        if selection == '2':
+            number_of_real_classes = 2
+            # Load the CSV file using Pandas
+            X_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'X_Balance.csv'
+            y_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'y_Balance.csv'
+
+            df_X = pd.read_csv(X_selected_dataset_directory,header=None)
+            x = df_X.astype(float).values
+
+            df_y = pd.read_csv(y_selected_dataset_directory,header=None)
+            y = df_y.astype(float).values.reshape(-1,)
+
+            break
+
+        if selection == '3':
+            number_of_real_classes = 2
+            # Load the CSV file using Pandas
+            X_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'X_BreastCancer.csv'
+            y_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'y_BreastCancer.csv'
+
+            df_X = pd.read_csv(X_selected_dataset_directory,header=None)
+            x = df_X.astype(float).values
+
+            df_y = pd.read_csv(y_selected_dataset_directory,header=None)
+            y = df_y.astype(float).values.reshape(-1,)
+
+            break
+
+        elif selection == '4':
+            number_of_real_classes = 4
+
+            X_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'X_CarEvaluation.csv'
+            y_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'y_CarEvaluation.csv'
+
+            df_X = pd.read_csv(X_selected_dataset_directory,header=None)
+            x = df_X.astype(float).values
+
+            df_y = pd.read_csv(y_selected_dataset_directory,header=None)
+            y = df_y.astype(float).values.reshape(-1,)
+            break
+
+        elif selection == '5':
+            number_of_real_classes = 8
+            # Load the CSV file using Pandas
+            X_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'X_Ecoli.csv'
+            y_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'y_Ecoli.csv'
+
+            df_X = pd.read_csv(X_selected_dataset_directory,header=None)
+            x = df_X.astype(float).values
+
+            df_y = pd.read_csv(y_selected_dataset_directory,header=None)
+            y = df_y.astype(float).values.reshape(-1,)
+            break
+        
+        elif selection == '6':
+            number_of_real_classes = 6
+            # Load the CSV file using Pandas
+            X_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'X_Glass.csv'
+            y_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'y_Glass.csv'
+
+            df_X = pd.read_csv(X_selected_dataset_directory,header=None)
+            x = df_X.astype(float).values
+
+            df_y = pd.read_csv(y_selected_dataset_directory,header=None)
+            y = df_y.astype(float).values.reshape(-1,)
+            break
+
+        elif selection == '7':
+            number_of_real_classes = 2
+            # Load the CSV file using Pandas
+            X_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'X_Heart.csv'
+            y_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'y_Heart.csv'
+
+            df_X = pd.read_csv(X_selected_dataset_directory,header=None)
+            x = df_X.astype(float).values
+
+            df_y = pd.read_csv(y_selected_dataset_directory,header=None)
+            y = df_y.astype(float).values.reshape(-1,)
+            break
+        
+        elif selection == '8':
+            number_of_real_classes = 2
+            # Load the CSV file using Pandas
+            X_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'X_Ionosphere.csv'
+            y_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'y_Ionosphere.csv'
+
+            df_X = pd.read_csv(X_selected_dataset_directory,header=None)
+            x = df_X.astype(float).values
+
+            df_y = pd.read_csv(y_selected_dataset_directory,header=None)
+            y = df_y.astype(float).values.reshape(-1,)
+            break
+
+        elif selection == '9':
+            number_of_real_classes = 3
+            # Load the Iris dataset
+            X_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'X_Iris.csv'
+            y_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'y_Iris.csv'
+
+            df_X = pd.read_csv(X_selected_dataset_directory,header=None)
+            x = df_X.astype(float).values
+
+            df_y = pd.read_csv(y_selected_dataset_directory,header=None)
+            y = df_y.astype(float).values.reshape(-1,)
+
+            break
+
+        elif selection == '10':
+            number_of_real_classes = 4
+            # Load the CSV file using Pandas
+            X_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'X_Soya.csv'
+            y_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'y_Soya.csv'
+
+            df_X = pd.read_csv(X_selected_dataset_directory,header=None)
+            x = df_X.astype(float).values
+
+            df_y = pd.read_csv(y_selected_dataset_directory,header=None)
+            y = df_y.astype(float).values.reshape(-1,)
+            break
+
+        elif selection == '11':
+            number_of_real_classes = 3
+            # Load the CSV file using Pandas
+            X_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'X_TeachingAssistant.csv'
+            y_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'y_TeachingAssistant.csv'
+
+            df_X = pd.read_csv(X_selected_dataset_directory,header=None)
+            x = df_X.astype(float).values
+
+            df_y = pd.read_csv(y_selected_dataset_directory,header=None)
+            y = df_y.astype(float).values.reshape(-1,)
+            break
+
+        elif selection == '12':
+            number_of_real_classes = 2
+            # Load the CSV file using Pandas
+            X_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'X_TicTacToe.csv'
+            y_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'y_TicTacToe.csv'
+
+            df_X = pd.read_csv(X_selected_dataset_directory,header=None)
+            x = df_X.astype(float).values
+
+            df_y = pd.read_csv(y_selected_dataset_directory,header=None)
+            y = df_y.astype(float).values.reshape(-1,)
+            break
+        elif selection == '13':
+            number_of_real_classes = 3
+            # Load the CSV file using Pandas
+            X_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'X_Wine.csv'
+            y_selected_dataset_directory = script_folder / 'data'/ 'Renato_data'/ 'y_Wine.csv'
+
+            df_X = pd.read_csv(X_selected_dataset_directory,header=None)
+            x = df_X.astype(float).values
+
+            df_y = pd.read_csv(y_selected_dataset_directory,header=None)
+            y = df_y.astype(float).values.reshape(-1,)
+            break
+        else:
+            print("Invalid option")
+    return x, y, number_of_real_classes
+
 
 
